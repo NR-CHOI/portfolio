@@ -1,0 +1,60 @@
+html{
+    height: calc(100vh - 56px - 52px);
+    }
+
+body{
+    height:100%;
+    }
+
+#wrapper{
+    height: auto;
+  min-height: 100%;
+  padding-bottom:10%;
+    }
+
+footer{
+    position: relative;
+    transform : translateY(-100%);
+    max-width: 800px;
+    margin: 0 auto;
+    }
+
+.join_container{
+    max-width: 1140px;
+    margin-right:auto;
+    margin-left:auto;
+    }
+
+.container_subMenu{
+    background-color:#e9ecef;
+    }
+table{
+    width: 100%;
+    border: 1px solid #dee2e6;
+    padding: 0 0 30px 20px;
+    border-collapse: separate;
+    border-radius:10px;
+    }
+
+tr{
+    height:70px;
+    }
+td{
+    width:50%;
+    }
+table a{
+    text-decoration-line: none;
+    color: grey;
+    }
+.roomImg{
+    width:80px;
+    height:80px;
+    object-fit: cover;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    }
+.cancel{
+    display:block;
+    margin-left:auto;
+    width: 20%;
+    }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<ul class="content">
+    <th:block th:if="${startDay} != 7">
+        <li class="none" th:each="num :${#numbers.sequence(1,{startDay})}">-</li>
+    </th:block>
+    <th:block th:each="calendar: ${calendarList}">
+        <li>
+            <!-- 객실재고가 없을 때 -->
+            <th:block th:if="${#lists.size(calendar?.rooms)} == 0">
+                <a th:href="@{/room/add(roomInfoId=${roomInfoId}, year=${calendar.year}, month=${calendar.month}, day=${calendar.day})}"
+                   class="noStock"
+                   th:classappend="${calendar.year == todayYear && calendar.month == todayMonth && calendar.day == todayDay}?'dayOfMonth':_">
+                    [[${calendar.day}]]
+                    <div>
+                        <span>객실없음</span>
+                    </div>
+                </a>
+            </th:block>
+            <!-- 객실재고가 있을 때 -->
+            <th:block th:if="${#lists.size(calendar?.rooms)} != 0">
+                <th:block th:each="room : ${calendar.rooms}">
+                    <!-- 객실재고가 있음 & 객실 close -->
+                    <th:block th:if="${room.status == false || room.status == null}">
+                        <a th:href="@{/room/update/{roomId}(roomId=${room.roomId})}" class="noStock"
+                           th:classappend="${calendar.year == todayYear && calendar.month == todayMonth && calendar.day == todayDay}?'dayOfMonth':_">
+                            [[${calendar.day}]]
+                            <div>
+                                <span>객실없음</span>
+                            </div>
+                        </a>
+                    </th:block>
+                    <!-- 객실재고가 있음 & 객실 open -->
+                    <th:block th:if="${room.status == true}">
+                        <a th:href="@{/room/update/{roomId}(roomId=${room.roomId})}" class="stocks"
+                           th:classappend="${calendar.year == todayYear && calendar.month == todayMonth && calendar.day == todayDay}?'dayOfMonth':_">
+                            [[${calendar.day}]]
+                            <div>
+                                <span th:text="|가격: ${room.price}원,|"></span>
+                                <span th:text="|갯수: ${room.quantity}개|"></span>
+                            </div>
+                        </a>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </li>
+    </th:block>
+    <th:block th:if="${needList != 0}">
+        <li class="none" th:each="num :${#numbers.sequence(1,{needList})}">-</li>
+    </th:block>
+    </li>
+</ul>
+
+</html>

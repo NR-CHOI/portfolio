@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="copy">
+    <div class="navbar navbar-dark bg-dark shadow-sm" data-bs-theme="dark">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                     class="bi bi-suitcase2" viewBox="0 0 16 16">
+                    <path d="M6.5 0a.5.5 0 0 0-.5.5V3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 1.031 1.75A1.003 1.003 0 0 0 5 16a1 1 0 0 0 1-1h4a1 1 0 1 0 1.969-.25A2 2 0 0 0 13 13V5a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-.5-.5zM9 3H7V1h2zm3 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h8zM5 4h6a1 1 0 0 1 1 1v1H4V5a1 1 0 0 1 1-1"/>
+                </svg>
+                <strong>&nbsp;바로여기</strong>
+            </a>
+            <th:block th:if="${#strings.isEmpty(member?.name)}">
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-center"
+                                type="button" th:text="#{button.login}"
+                                onclick="location.href='loginForm.html'" th:onclick="|location.href='@{/login}'|">로그인
+                        </button>
+                        <button class="btn btn-primary btn-center"
+                                type="button" th:text="#{member.addMember}"
+                                onclick="location.href='addForm.html'" th:onclick="|location.href='@{/member/join}'|">
+                            회원가입
+                        </button>
+                    </div>
+                </nav>
+            </th:block>
+            <th:block th:if="${not #strings.isEmpty(member?.name)}">
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                style="none">
+                        <span class="me-3 py-2 link-body-emphasis text-decoration-none"
+                              th:text="|${member.name} 회원님, 반갑습니다.|">회원명</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/myPage/myReservation">마이페이지</a></li>
+                            <li><a class="dropdown-item" href="/room/calendar">숙소관리</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">로그아웃</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-primary btn-center" type="submit" th:text="#{button.logout}">로그아웃</button>
+                </form>
+            </th:block>
+        </div>
+    </div>
+    <div class="container_subMenu">
+        <div class="container padding">
+            <form class="d-flex formStyle" th:action="@{/room/search}" th:object="${form}" method="get">
+                <div class="d-flex dateInputDiv">
+                    <label for="schedule" class="form-label dateInputLabel">날짜</label>
+                    <input class="form-control dateInput" type="text" name="daterange" id="schedule">
+                </div>
+                <input type="hidden" class="form-control" th:field="*{checkInDate}">
+                <input type="hidden" class="form-control" th:field="*{checkOutDate}">
+
+                <div class="d-flex inputDiv">
+                    <label for="people" class="form-label inputLabel">인원수</label>
+                    <input type="button" value="-" class="people" onclick='count("minus", this)'>
+                    <input class="form-control numberInput" type="text" id="people" th:field="*{people}" readonly="readonly">
+                    <input type="button" value="+" class="people" onclick='count("plus", this)'>
+                </div>
+
+                <div class="d-flex inputDiv">
+                    <label for="quantity" class="form-label inputLabel">객실수</label>
+                    <input type="button" value="-" class="quantity" onclick='count("minus", this)'>
+                    <input class="form-control numberInput" type="text" id="quantity" th:field="*{quantity}" readonly="readonly">
+                    <input type="button" value="+" class="quantity" onclick='count("plus", this)'>
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-outline-success search" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>

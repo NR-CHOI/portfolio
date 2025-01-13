@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="list">
+    <table class="table table-striped mb-5">
+        <thead>
+        <tr>
+            <th>예약자</th>
+            <th>체크인</th>
+            <th>체크아웃</th>
+            <th>객실</th>
+            <th>예약날짜</th>
+            <th>예약상태</th>
+            <th>금액</th>
+            <th>예약번호</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookingList}"
+            th:onclick="|location.href='@{/booking/view/{bookingId}(bookingId=${booking.bookingId})}'|"
+            style="cursor:pointer;">
+            <td th:text="${booking.name}"></td>
+            <td th:text="${#temporals.format(booking.arrivalDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(booking.departureDate, 'yyyy-MM-dd')}"></td>
+            <td>
+                <th:block th:each="bookedRoom : ${booking.bookedRooms}">
+                    <span th:if="${#temporals.format(bookedRoom.date, 'yyyy-MM-dd') == #temporals.format(booking.arrivalDate, 'yyyy-MM-dd')}" th:text="|${bookedRoom.roomType} ${bookedRoom.count}&nbsp;|"></span>
+                </th:block>
+            </td>
+            <td th:text="${#temporals.format(booking.bookingDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${booking.status}"></td>
+            <td>
+                <th:block th:each="bookedRoom : ${booking.bookedRooms}">
+                    <span th:if="${bookedRoomStat.first}"
+                          th:text="${#aggregates.sum(booking.bookedRooms.![bookingPrice])}"></span>
+                </th:block>
+            </td>
+            <td th:text="${booking.bookingId}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{fragments/pageNationForAjax :: copy}"></div>
+</div>
+</html>

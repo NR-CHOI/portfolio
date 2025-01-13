@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="copy" data-bs-theme="dark">
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                     class="bi bi-suitcase2" viewBox="0 0 16 16">
+                    <path d="M6.5 0a.5.5 0 0 0-.5.5V3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 1.031 1.75A1.003 1.003 0 0 0 5 16a1 1 0 0 0 1-1h4a1 1 0 1 0 1.969-.25A2 2 0 0 0 13 13V5a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-.5-.5zM9 3H7V1h2zm3 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h8zM5 4h6a1 1 0 0 1 1 1v1H4V5a1 1 0 0 1 1-1"/>
+                </svg>
+                <strong>&nbsp;바로여기</strong>
+            </a>
+            <th:block th:if="${#strings.isEmpty(member?.name)}">
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-center"
+                                type="button" th:text="#{button.login}"
+                                onclick="location.href='loginForm.html'" th:onclick="|location.href='@{/login}'|">로그인
+                        </button>
+                        <button class="btn btn-primary btn-center"
+                                type="button" th:text="#{member.addMember}"
+                                onclick="location.href='addForm.html'" th:onclick="|location.href='@{/member/join}'|">
+                            회원가입
+                        </button>
+                    </div>
+                </nav>
+            </th:block>
+            <th:block th:if="${not #strings.isEmpty(member?.name)}">
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                style="none">
+                        <span class="me-3 py-2 link-body-emphasis text-decoration-none"
+                              th:text="|${member.name} 회원님, 반갑습니다.|">회원명</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/myPage/myReservation">마이페이지</a></li>
+                            <li><a class="dropdown-item" href="/room/calendar">숙소관리</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-primary btn-center" type="submit" th:text="#{button.logout}">로그아웃</button>
+                </form>
+            </th:block>
+        </div>
+    </div>
+    <div class="container_subMenu">
+        <header class="container d-flex justify-content-left">
+            <ul class="nav nav-pills navBtn">
+                <li class="nav-item">
+                    <a href="/room/calendar" class="nav-link" th:classappend="${#request.requestURI.equals('/room/calendar')
+                    || #request.requestURI.equals('/room/add')
+                    || #request.requestURI.contains('/room/list')
+                    || #request.requestURI.contains('/room/update/')}? 'active':_">객실재고 및 요금</a>
+                </li>
+                <li class="nav-item"><a href="/roominfo/list" class="nav-link" th:classappend="${#request.requestURI.equals('/roominfo/list')
+                    || #request.requestURI.contains('/roominfo/view')
+                    || #request.requestURI.contains('/roominfo/add')
+                    || #request.requestURI.contains('/roominfo/update')
+                    }? 'active':_">객실등록</a></li>
+                <li class="nav-item"><a href="/booking/list" class="nav-link"
+                                        th:classappend="${requestURI == '/booking/list' || #request.requestURI.contains('/booking/view/')}? 'active':_">예약내역</a>
+                </li>
+            </ul>
+        </header>
+    </div>
+</header>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>회원정보수정</title>
+    <link th:href="@{/css/memberAddForm.css}" href="../css/memberAddForm.css" rel="stylesheet">
+<body>
+<header th:replace="~{fragments/navbar_member :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="my-0">회원정보수정</h2>
+    </div>
+
+    <form th:action="@{/myPage/modifyInfo}" th:object="${form}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+            <label for="name" th:text="#{member.name}" class="form-label">name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" th:errorclass="field-error" readonly
+                   style="background-color:#e9ecef;">
+            <div class="field-error" th:errors="*{name}">회원명 오류</div>
+        </div>
+        <div class="mb-3">
+            <label for="email" th:text="#{member.email}" class="form-label">Email address</label>
+            <input type="email" id="email" th:field="*{email}" th:errorclass="field-error"
+                   th:class="${#fields?.hasGlobalErrors()} ? 'form-control global-error' : 'form-control'"
+                   class="form-control" readonly style="background-color:#e9ecef;">
+            <div th:each="err : ${#fields.errors('email')}" th:if="${errStat.first}" th:text="${err}"
+                 class="global-error">이메일 오류
+            </div>
+            <div th:if="${#fields.hasGlobalErrors()}" th:each="err:${#fields.globalErrors()}" th:text="${err}"
+                 class="field-error">이메일 중복 오류메시지
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" th:text="#{member.password}" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" th:errorclass="field-error"
+                   placeholder="비밀번호를 입력하세요.">
+            <div th:each="err:${#fields.errors('password')}" th:if="${errStat.first}" th:text="${err}"
+                 class="field-error">비밀번호 오류
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" th:text="#{member.phoneNumber}" class="form-label">PhoneNumber</label>
+            <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                   th:errorclass="field-error" placeholder="휴대전화번호을 입력하세요.">
+            <div th:each="err:${#fields.errors('phoneNumber')}" th:if="${errStat.first}" th:text="${err}"
+                 class="field-error">휴대폰번호 오류
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary submit_btn" th:text="#{button.update}">수정</button>
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

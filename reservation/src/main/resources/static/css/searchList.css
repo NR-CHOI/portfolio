@@ -1,0 +1,105 @@
+html{
+    height: calc(100vh - 56px - 52px);
+    }
+body{
+    height:100%;
+    }
+#wrapper{
+    height: auto;
+    min-height: 100%;
+    padding-bottom:10%;
+    }
+footer{
+    position: relative;
+    transform : translateY(-100%);
+    max-width: 800px;
+    margin: 0 auto;
+    }
+.container{
+    max-width: 1140px;
+    }
+.box{
+    justify-content: center;
+    }
+.container_subMenu{
+    background-color:#e9ecef;
+    }
+.padding{
+    padding: 7px 0px;
+    }
+.formStyle{
+    justify-content:space-between;
+    }
+.dateInputDiv{
+    align-items:center;
+    width:40%;
+    }
+
+.dateInputLabel{
+    margin:0px;
+    width:15%;
+    }
+.dateInput{
+    width:100%;
+    text-align:center;
+    }
+.inputDiv{
+    align-items:center;
+    width:16%;
+    }
+.inputLabel{
+    margin:0px;
+    width:70%;
+    }
+.numberInput{
+    width:50%;
+    text-align:center;
+    }
+
+.submit_btn{
+    width:100%;
+    }
+
+#btnValue{
+    background-color: #ced4da;
+    border: 1px solid #bdc1c6;
+    color:#495057;
+    }
+
+.blog-header-logo {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif/*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+    font-size: 2.25rem;
+    }
+
+.blog-header-logo:hover {
+    text-decoration: none;
+    }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif/*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+    }
+
+.flex-auto {
+    flex: 0 0 auto;
+    }
+
+.h-250 {
+    height: 250px;
+    }
+@media (min-width: 768px) {
+    .h-md-250 { height: 250px; }
+    }
+
+/* Pagination */
+.blog-pagination {
+    margin-bottom: 4rem;
+    }
+
+/* Blog posts */
+.blog-post {
+    margin-bottom: 4rem;
+    }
+.blog-post-meta {
+    margin-bottom: 1.25rem;
+    color: #727272;
+    }

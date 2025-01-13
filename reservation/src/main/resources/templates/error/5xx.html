@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>최고의 객실예약 사이트</title>
+    <link th:href="@{/css/common.css}" href="../css/common.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_none :: copy}"></header>
+<div class="success" id="wrapper">
+    <div class="join_container_text">
+        <div class="title text-center">
+            <h4>잘못된 접근입니다. 다시 시도해 주세요.</h4>
+            <button class="btn btn-primary submit_btn" type="button" style="width:150px;"
+                    onclick="location.href='home.html'" th:onclick="|location.href='@{/}'|">홈으로 가기
+            </button>
+        </div>
+    </div>
+</body>
+</html>

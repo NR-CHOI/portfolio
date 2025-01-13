@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>예약</title>
+    <link th:href="@{/css/common.css}" href="../css/common.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: copy}"></header>
+<div class="container" id="wrapper">
+    <div class="row pt-5">
+        <div class="col-md-6">
+            <ul class="list-group mb-3">
+                <li class="list-group-item">
+                    <h5 class="mb-3">예약 정보</h5>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <small class="text-body-secondary">체크인</small>
+                            <h6 class="my-1">[[${bookingFormList[0].checkInDate}]]</h6>
+                            <small class="text-body-secondary">체크인 시간</small>
+                        </div>
+                        <div>
+                            <small class="text-body-secondary">체크아웃</small>
+                            <h6 class="my-1">[[${bookingFormList[0].checkOutDate}]]</h6>
+                            <small class="text-body-secondary">체크아웃 시간</small>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <small class="text-body-secondary">총 숙박 기간</small>
+                        <h6 class="my-1">[[${bookingFormList[0].days}]]박</h6>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div style="width:100%;">
+                        <small class="text-body-secondary">선택한 옵션</small>
+                        <th:block th:each="booking : ${bookingFormList}">
+                            <h6 class="my-1" th:if="${bookingStat.first}"
+                                th:text="|객실 ${#aggregates.sum(bookingFormList.![count])}개, 총 ${booking.people}명|"></h6>
+                            <small class="my-0 lh-sm" style="display:block;" th:if="${booking.count} != 0"
+                                   th:text="|${booking.roomType}룸 ${booking.count}개|"></small>
+                        </th:block>
+                        <a type="button" class="change" href="javascript:window.history.back();">다른 객실로 변경</a>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="totalPrice">
+                        <small class="text-body-secondary">총 요금</small>
+                        <th:block th:each="booking : ${bookingFormList}">
+                            <h4 class="my-1" th:if="${bookingStat.last}"
+                                th:text="|${#numbers.formatInteger(#aggregates.sum(bookingFormList.![price * count]),3,'COMMA')}원|"></h4>
+                        </th:block>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h5 class="mb-0">대표 투숙객 정보</h5>
+                    <small style="color:grey">정보수정은 마이페이지-회원정보수정에서 변경가능합니다.</small>
+                    <form class="needs-validation mt-2" novalidate>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="firstName" class="form-label">이름</label>
+                                <input type="text" class="form-control" id="firstName" th:field="${member.name}"
+                                       readonly>
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">이메일</label>
+                                <input type="email" class="form-control" id="email" th:field="${member.email}"
+                                       placeholder="you@example.com" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label for="country" class="form-label">국가</label>
+                                <select class="form-select" id="country" required>
+                                    <option value="">Choose...</option>
+                                    <option selected>대한민국</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label for="phoneNumber" class="form-label">전화번호</label>
+                                <input type="text" class="form-control" id="phoneNumber"
+                                       th:field="${member.phoneNumber}" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <form th:action method="post" class="mt-3">
+            <div th:each="booking : ${bookingFormList}">
+                <input type="hidden" class="form-control" name="memberId" th:value="${member.id}">
+                <input type="hidden" class="form-control" name="roomInfoId" th:value="${booking.roomInfoId}">
+                <input type="hidden" class="form-control" name="checkInDate" th:value="${booking.checkInDate}">
+                <input type="hidden" class="form-control" name="checkOutDate" th:value="${booking.checkOutDate}">
+                <input type="hidden" class="form-control" name="price" th:value="${booking.price}">
+                <input type="hidden" class="form-control" name="count" th:value="${booking.count}">
+                <input type="hidden" class="form-control" name="people" th:value="${booking.people}">
+            </div>
+            <div class="btn-box-end">
+                <button type="submit" class="btn btn-primary btn-each2" th:text="#{button.add}">예약하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>최고의 객실예약 사이트</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <link th:href="@{/css/searchList.css}" href="../css/searchList.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_search :: copy}"></header>
+<main th:replace="~{fragments/searchList :: copy}"></main>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="../js/dateRangePickerForList.js" th:src="@{/js/dateRangePickerForList.js}"></script>
+</body>
+</html>

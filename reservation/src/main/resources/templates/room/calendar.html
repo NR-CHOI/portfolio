@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실요금 및 재고 설정</title>
+    <link th:href="@{/css/roomQuantity.css}" href="../css/roomQuantity.css" rel="stylesheet">
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container">
+    <div class="calendar" id="calendar">
+        <ul class="selectBoxs">
+            <select class="form-select" id="roomInfoId" onchange="change();">
+                <option th:if="${#lists.size(findRoomInfos) == 0}">등록된 객실타입이 없습니다.</option>
+                <th:block th:each="roomInfo : ${findRoomInfos}">
+                    <option th:selected="${roomInfo.roomInfoId == roomInfoId}" th:value="${roomInfo.roomInfoId}"
+                            th:text="${roomInfo.roomType}"></option>
+                </th:block>
+            </select>
+            <select class="form-select" id="date" onchange="change();">
+                <th:block th:each="yearNum : ${#numbers.sequence(year-2, year+2)}">
+                    <th:block th:each="monthNum : ${#numbers.sequence(1, 12)}">
+                        <option th:selected="${yearNum == year && monthNum == month}" th:value="${yearNum}"
+                                th:value2="${monthNum}">[[${yearNum}]]년 [[${monthNum}]]월
+                        </option>
+                    </th:block>
+                </th:block>
+            </select>
+        </ul>
+        <div class="title">
+            <div class="left">
+                <button class="btn btn-secondary" id="prev"><</button>
+            </div>
+            <div class="center">
+                <span id="titleYear">[[${year}]]년</span>
+                <span id="titleMonth">[[${month}]]월</span>
+            </div>
+            <div class="right">
+                <button class="btn btn-secondary" id="next">></button>
+                <button class="today btn btn-outline-secondary" id="today">go to today</button>
+            </div>
+        </div>
+        <ul class="week">
+            <li>SUN</li>
+            <li>MON</li>
+            <li>TUE</li>
+            <li>WED</li>
+            <li>THR</li>
+            <li>FRI</li>
+            <li>SAT</li>
+        </ul>
+        <ul class="content">
+            <th:block th:if="${startDay} != 7">
+                <li class="none" th:each="num :${#numbers.sequence(1,{startDay})}">-</li>
+            </th:block>
+            <th:block th:each="calendar: ${calendarList}">
+                <li>
+                    <!-- 객실재고가 없을 때 -->
+                    <th:block th:if="${#lists.size(calendar?.rooms)} == 0">
+                        <a th:href="@{/room/add(roomInfoId=${roomInfoId}, year=${calendar.year}, month=${calendar.month}, day=${calendar.day})}"
+                           class="noStock"
+                           th:classappend="${calendar.year == year && calendar.month == month && calendar.day == dayOfMonth}?'dayOfMonth':_">
+                            [[${calendar.day}]]
+                            <div>
+                                <span>객실없음</span>
+                            </div>
+                        </a>
+                    </th:block>
+                    <!-- 객실재고가 있을 때 -->
+                    <th:block th:if="${#lists.size(calendar?.rooms)} != 0">
+                        <th:block th:each="room : ${calendar.rooms}">
+                            <!-- 객실재고가 있음 & 객실 close -->
+                            <th:block th:if="${room.status == false || room.status == null}">
+                                <a th:href="@{/room/update/{roomId}(roomId=${room.roomId})}" class="noStock"
+                                   th:classappend="${calendar.year == year && calendar.month == month && calendar.day == dayOfMonth}?'dayOfMonth':_">
+                                    [[${calendar.day}]]
+                                    <div>
+                                        <span>객실없음</span>
+                                    </div>
+                                </a>
+                            </th:block>
+                            <!-- 객실재고가 있음 & 객실 open -->
+                            <th:block th:if="${room.status == true}">
+                                <a th:href="@{/room/update/{roomId}(roomId=${room.roomId})}" class="stocks"
+                                   th:classappend="${calendar.year == year && calendar.month == month && calendar.day == dayOfMonth}?'dayOfMonth':_">
+                                    [[${calendar.day}]]
+                                    <div>
+                                        <span th:text="|가격: ${room.price}원,|"></span>
+                                        <span th:text="|갯수: ${room.quantity}개|"></span>
+                                    </div>
+                                </a>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                </li>
+            </th:block>
+            <th:block th:if="${needList != 0}">
+                <li class="none" th:each="num :${#numbers.sequence(1,{needList})}">-</li>
+            </th:block>
+        </ul>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script th:inline="javascript">
+
+function change(){
+    var roomInfoId = $("#roomInfoId").val();
+    var selectYear = $("#date").val();
+    var selectMonth = $("#date > option:selected").attr("value2");
+    console.log("roomInfoId: "+roomInfoId);
+    console.log("selectYear: "+selectYear);
+    console.log("selectMonth: "+selectMonth);
+
+    calendarChange(roomInfoId, selectYear, selectMonth);
+}
+
+$('#prev').on('click', function(){
+    var prevMonth = $("#date > option:selected").prev().attr("value2");
+    console.log("prevMonth: "+ prevMonth);
+
+    $("#date > option:selected").prev().prop("selected", true);
+
+    var roomInfoId = $("#roomInfoId").val();
+    var selectYear = $("#date").val();
+    var selectMonth = $("#date > option:selected").attr("value2");
+
+    calendarChange(roomInfoId, selectYear, selectMonth);
+});
+
+$('#next').on('click', function(){
+    var nextMonth = $("#date > option:selected").next().attr("value2");
+    console.log("nextMonth: "+ nextMonth);
+
+    $("#date > option:selected").next().prop("selected", true);
+
+    var roomInfoId = $("#roomInfoId").val();
+    var selectYear = $("#date").val();
+    var selectMonth = $("#date > option:selected").attr("value2");
+
+    calendarChange(roomInfoId, selectYear, selectMonth);
+});
+
+$('#today').on('click', function(){
+    var selectYear = [[${year}]];
+    var selectMonth = [[${month}]];
+
+    var roomInfoId = $("#roomInfoId").val();
+    console.log("roomInfoId: "+ roomInfoId);
+
+    $("#date > option[value="+selectYear+"][value2="+selectMonth+"]").prop("selected", true);
+
+    var selectYear = $("#date").val();
+    console.log("selectYear: "+ selectYear);
+
+    var selectMonth = $("#date > option:selected").attr("value2");
+    console.log("selectMonth: "+ selectMonth);
+
+    calendarChange(roomInfoId, selectYear, selectMonth);
+});
+
+function calendarChange(roomInfoId, selectYear, selectMonth){
+    $.ajax({
+        url: "/room/calendarChange",
+        type: "get",
+        async: true,
+        data: {'roomInfoId':roomInfoId ,'year':selectYear, 'month': selectMonth},
+        success:function(result){
+        var calendarList = [[${calendarList}]];
+        console.log("calendarList: "+calendarList);
+
+        $('.content').remove();
+        console.log(result);
+
+        $("#calendar").append(result);
+
+        $("#titleYear").text(selectYear+'년');
+        $("#titleMonth").text(selectMonth+'월');
+
+        },
+        error: function(){
+            console.log('실패');
+        }
+    });
+}
+
+
+</script>
+</body>
+</html>

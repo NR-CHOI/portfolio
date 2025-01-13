@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<main th:fragment="copy" id="wrapper">
+    <section class="pt-5 container">
+        <div class="row mb-2 box">
+            <div class="col-md-10">
+                <form th:action="@{/booking/add}" id="roomList" method="get">
+                    <p th:if="${#lists.isEmpty(content)}" style="text-align:center;">예약가능한 객실이 없습니다.</p>
+                    <div th:each="room : ${result}"
+                         class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                        <th:block th:if="${not #lists.isEmpty(room?.storeS3Urls)}">
+                            <div class="col-md-4 col-sm d-none d-sm-block">
+                                <a data-bs-toggle="modal" th:data-bs-target="|#exampleModal${room.roomInfoId}|">
+                                    <img th:src="${room.storeS3Urls.get(0)}"
+                                         style="width:100%; height:100%; object-fit: cover;">
+                                </a>
+                                <!-- Modal -->
+                                <div class="modal fade" th:id="|exampleModal${room.roomInfoId}|" tabindex="-1"
+                                     th:aria-labelledby="|exampleModalLabel${room.roomInfoId}|" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5"
+                                                    th:id="|exampleModalLabel${room.roomInfoId}|"
+                                                    th:text="|${room.roomType}룸|"></h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <th:block th:each="storeS3Url : ${room.storeS3Urls}">
+                                                    <img th:src="${storeS3Url}"
+                                                         style="width:32%;height:250px;object-fit: cover;">
+                                                </th:block>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    닫기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${#lists.isEmpty(room?.storeS3Urls)}">
+                            <div class="col-md-4 col-sm d-none d-sm-block">
+                                <svg class="bd-placeholder-img" width="100%" height="100%"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     role="img"
+                                     aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                                     focusable="false">
+                                    <title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                                </svg>
+                            </div>
+                        </th:block>
+                        <div class="col-md-8 col-sm p-4 d-flex flex-column position-static content">
+                            <h3 class="mb-0" th:text="|${room.roomType}룸|">객실타입</h3>
+                            <div class="mb-1 text-body-secondary" th:text="|${room.quantity}개 남음|">남은 갯수</div>
+                            <input type="hidden" class="form-control" th:value="${room.roomInfoId}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].roomInfoId'">
+                            <input type="hidden" class="form-control" th:value="${room.roomType}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].roomType'">
+                            <th:block th:if="${not #strings.isEmpty(member?.name)}">
+                                <input type="hidden" class="form-control" th:value="${member.id}"
+                                       th:name="'BookingFormList['+${roomStat.index}+'].memberId'">
+                            </th:block>
+                            <input type="hidden" class="form-control" th:value="${form.checkInDate}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].checkInDate'">
+                            <input type="hidden" class="form-control" th:value="${form.checkOutDate}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].checkOutDate'">
+                            <input type="hidden" class="form-control" th:value="${form.people}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].people'">
+                            <input type="hidden" class="form-control" th:value="${room.price}"
+                                   th:id="'BookingFormList['+${roomStat.index}+'].price'"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].price'">
+                            <select class="form-select" th:id="'BookingFormList['+${roomStat.index}+'].count'"
+                                    th:name="'BookingFormList['+${roomStat.index}+'].count'"
+                                    th:onchange="change([[${roomStat.index}]]);">
+                                <option value="0">0개</option>
+                                <th:block th:each="num : ${#numbers.sequence(1,room.quantity)}">
+                                    <option th:value="${num}"
+                                            th:text="|${num}개&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(${#numbers.formatInteger(num*room.price,3,'COMMA')}원)|"
+                                            th:selected="${num} == 0"></option>
+                                </th:block>
+                            </select>
+                            <input type="hidden" class="form-control" th:value="${stayDate}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].days'">
+                            <input type="hidden" class="form-control" th:value="${form.quantity}"
+                                   th:name="'BookingFormList['+${roomStat.index}+'].quantity'">
+                            <input type="hidden" id="hasNext" th:value="${hasNext}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2 bg-light-subtle border rounded-3 shadow-sm mb-3 pt-4"
+                 th:if="${not #lists.isEmpty(content)}">
+                <div class="position-sticky" id="selectText" style="top: 2rem;">
+                    <button form="roomList" class="btn btn-primary submit_btn" type="submit" th:text="#{button.add}">
+                        예약하기
+                    </button>
+                    <small>단 2분이면 예약 완료</small>
+                </div>
+            </div>
+
+        </div>
+        <form id="moreBtn" th:object="${form}">
+            <input type="hidden" class="form-control" id="checkIn" th:value="*{checkInDate}">
+            <input type="hidden" class="form-control" id="checkOut" th:value="*{checkOutDate}">
+            <input type="hidden" class="form-control" id="peopleNum" th:value="*{people}">
+            <input type="hidden" class="form-control" id="quantityNum" th:value="*{quantity}">
+            <input type="hidden" class="form-control" id="stayDateNum" th:value="${stayDate}">
+            <button type="button" class="btn btn-secondary btn-sm" th:if="${hasNext == true}" id="btnValue"
+                    th:value="${nowPage}" th:onclick="more()">더보기
+            </button>
+        </form>
+    </section>
+</main>

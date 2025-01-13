@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실재고 리스트</title>
+    <link th:href="@{/css/roomList.css}" href="../css/roomList.css" rel="stylesheet">
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="my-0">객실재고 리스트</h2>
+    </div>
+    <div class="btn_container">
+        <button class="btn btn-outline-primary" type="button"
+                onclick="location.href='room/addForm.html'" th:onclick="|location.href='@{/room/add}'|">객실재고 추가
+        </button>
+    </div>
+    <table class="table table-striped mb-5">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>객실타입</th>
+            <th>날짜</th>
+            <th>객실가격</th>
+            <th>객실수량</th>
+            <th>객실판매여부</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rooms : ${roomList}">
+            <td th:text="${roomsStat.count}"></td>
+            <td th:text="${rooms.roomType}"></td>
+            <td th:text="${rooms.date}"></td>
+            <td th:text="${rooms.price}"></td>
+            <td th:text="${rooms.quantity}"
+                th:onclick="|location.href='@{/room/update/{roomId}(roomId=${rooms.roomId})}'|"></td>
+            <td th:text="${rooms.status}"></td>
+            <td>
+                <button class="btn btn-primary btn-sm" type="button" th:text="#{button.update}"
+                        onclick="location.href='roominfo/updateForm.html'"
+                        th:onclick="|location.href='@{/room/update/{roomId}(roomId=${rooms.roomId})}'|">객실정보 수정
+                </button>
+            </td>
+            <td>
+                <form th:action="@{/room/delete/{roomId}(roomId=${rooms.roomId})}" method="post">
+                    <button class="btn btn-primary btn-sm" type="submit" th:text="#{button.delete}">객실삭제
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{fragments/pageNation :: copyParam('/room/list')}"></div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+html{
+    height: calc(100vh - 56px - 40px);
+    }
+
+body{
+    height:100%;
+    }
+
+#wrapper{
+    height: auto;
+    min-height: 100%;
+    padding-bottom:10%;
+    }
+footer{
+    position: relative;
+    transform : translateY(-100%);
+    max-width: 800px;
+    margin: 0 auto;
+    }
+.join_container{
+    max-width: 800px;
+    margin-right:auto;
+    margin-left:auto;
+    }
+h2{
+    margin-top:10%;
+    margin-bottom:10px;
+    }
+
+.bookingStatus{
+    text-align:center;
+    }
+.bookingStatus li{
+    width:49%;
+    }
+.bookingStatus li a{
+    cursor:pointer;
+    }
+
+.submit_btn{
+    width:100%;
+    margin-top:20px;
+    }
+
+.container_subMenu{
+    background-color:#e9ecef;
+    }
+
+.card-body{
+    height:100%;
+    }
+.card-body > a{
+    width: 30%;
+    display:block;
+    margin-left:auto;
+    }
+
+.pageing a{
+    cursor: pointer;
+    }
+
+
+

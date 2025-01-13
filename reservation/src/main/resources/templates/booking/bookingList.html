@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>예약 리스트</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <link th:href="@{/css/roomList.css}" href="../css/roomList.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="mt-0">예약 리스트</h2>
+    </div>
+    <form class="row formAlign">
+        <input type="hidden" id="memberId" th:value="${member.id}">
+        <div class="col-12 col-md ps-0">
+            <select class="form-select" id="criteria" aria-label="Default select example" onchange="change();">
+                <option value="arrivalDate">체크인</option>
+                <option value="departureDate">체크아웃</option>
+                <option value="bookingDate">예약날짜</option>
+                <option value="stayOver">숙박중인 예약</option>
+                <option value="bookingId">예약번호</option>
+                <option value="name">예약자명</option>
+            </select>
+        </div>
+        <div class="col-12 col-md ps-0">
+            <input type="text" class="form-control" id="startDate" name="dates" placeholder="시작일">
+        </div>
+        <div class="col-12 col-md ps-0">
+            <input type="text" class="form-control" id="endDate" name="dates" placeholder="마지막일" disabled>
+        </div>
+        <div class="col-12 col-md-4 ps-0">
+            <input type="text" class="form-control" id="word" placeholder="검색어를 입력하세요.">
+        </div>
+        <div class="col-12 col-md-1 ps-0 pe-0">
+            <button type="button" class="btn btn-outline-primary" id="searchBtn">&nbsp;검색&nbsp;</button>
+        </div>
+    </form>
+    <div class="list">
+        <table class="table table-striped mb-5">
+            <thead>
+            <tr>
+                <th>예약자</th>
+                <th>체크인</th>
+                <th>체크아웃</th>
+                <th>객실</th>
+                <th>예약날짜</th>
+                <th>예약상태</th>
+                <th>금액</th>
+                <th>예약번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookingList}"
+                th:onclick="|location.href='@{/booking/view/{bookingId}(bookingId=${booking.bookingId})}'|"
+                style="cursor:pointer;">
+                <td th:text="${booking.name}"></td>
+                <td th:text="${#temporals.format(booking.arrivalDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#temporals.format(booking.departureDate, 'yyyy-MM-dd')}"></td>
+                <td>
+                    <th:block th:each="bookedRoom : ${booking.bookedRooms}">
+                        <span th:if="${#temporals.format(bookedRoom.date, 'yyyy-MM-dd') == #temporals.format(booking.arrivalDate, 'yyyy-MM-dd')}"
+                              th:text="|${bookedRoom.roomType} ${bookedRoom.count}&nbsp;|"></span>
+                    </th:block>
+                </td>
+                <td th:text="${#temporals.format(booking.bookingDate, 'yyyy-MM-dd')}"></td>
+                <td th:text="${booking.status.description}"></td>
+                <td>
+                    <th:block th:each="bookedRoom : ${booking.bookedRooms}">
+                    <span th:if="${bookedRoomStat.first}"
+                          th:text="${#aggregates.sum(booking.bookedRooms.![bookingPrice])}"></span>
+                    </th:block>
+                </td>
+                <td th:text="${booking.bookingId}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:replace="~{fragments/pageNationForAjax :: copy}"></div>
+    </div>
+    <form>
+        <input type="hidden" name="criteria" value="">
+        <input type="hidden" name="startDate" value="">
+        <input type="hidden" name="endDate" value="">
+        <input type="hidden" name="word" value="">
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script th:src="@{/js/dateRangePickerForBookingList.js}"></script>
+</body>
+</html>

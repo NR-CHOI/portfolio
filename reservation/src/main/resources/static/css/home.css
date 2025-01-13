@@ -1,0 +1,63 @@
+html{
+    height: calc(100vh - 56px );
+    }
+body{
+    height:100%;
+    }
+#wrapper{
+    height: auto;
+    min-height: 100%;
+    }
+.container a{
+    text-decoration-line:none;
+    }
+footer{
+    position: relative;
+    transform : translateY(-100%);
+    }
+.formStyle{
+    justify-content:space-between;
+    }
+.dateInputDiv{
+    align-items:center;
+    width:40%;
+    }
+
+.dateInputLabel{
+    margin:0px;
+    width:15%;
+    }
+.dateInput{
+    width:100%;
+    text-align:left;
+    }
+.inputDiv{
+    align-items:center;
+    width:15%;
+    }
+.inputLabel{
+    margin:0px;
+    width:70%;
+    }
+.numberInput{
+    width:50%;
+    text-align:center;
+    }
+
+.slick-list{
+    width:100%;
+    }
+
+.col{
+    margin-right:15px;
+    }
+.slick-prev:before {
+    content: '<'!important;
+    color:grey!important;
+    font-size:25px!important;
+    }
+.slick-next:before {
+    content: '>'!important;
+    color:grey!important;
+    font-size:25px!important;
+    }

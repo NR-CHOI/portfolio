@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실리스트</title>
+    <link th:href="@{/css/roomList.css}" href="../css/roomList.css" rel="stylesheet">
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="my-0" th:text="#{roominfo.list}">객실정보 리스트</h2>
+    </div>
+    <div class="btn_container">
+        <button class="btn btn-outline-primary" type="button" th:text="#{roominfo.addRoom}"
+                onclick="location.href='roominfo/addForm.html'" th:onclick="|location.href='@{/roominfo/add}'|">객실정보 추가
+        </button>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>객실번호</th>
+            <th>객실타입</th>
+            <th>최대인원</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rooms : ${roomInfoList}">
+            <td th:text="${roomsStat.count}"></td>
+            <td th:text="${rooms.roomNo}"></td>
+            <td th:text="${rooms.roomType}"
+                th:onclick="|location.href='@{/roominfo/view/{roomInfoId}(roomInfoId=${rooms.roomInfoId})}'|"></td>
+            <td th:text="${rooms.maxNum}"></td>
+            <td>
+                <button class="btn btn-primary btn-sm" type="button" th:text="#{button.update}"
+                        onclick="location.href='roominfo/updateForm.html'"
+                        th:onclick="|location.href='@{/roominfo/update/{roomInfoId}(roomInfoId=${rooms.roomInfoId})}'|">
+                    객실정보 수정
+                </button>
+            </td>
+            <td>
+                <form th:action="@{/roominfo/delete/{roomInfoId}(roomInfoId=${rooms.roomInfoId})}" method="post">
+                    <button class="btn btn-primary btn-sm" type="submit" th:text="#{button.delete}"
+                            onclick="if(!confirm('삭제하시겠습니까?')){return false;}">객실삭제
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{fragments/pageNation :: copyParam ('/roominfo/list')}"></div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+
+</body>
+</html>

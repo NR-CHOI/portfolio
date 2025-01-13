@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실등록</title>
+    <link th:href="@{/css/commonForRoomInfo.css}" href="../css/commonForRoomInfo.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="my-0" th:text="#{roominfo.addRoom}">객실정보 등록</h2>
+    </div>
+    <form th:action th:object="${roomInfo}" method="post" enctype="multipart/form-data">
+        <!-- 객실등록한 아이디 -->
+        <input type="hidden" class="form-control" th:field="${member.id}">
+
+        <div class="mb-3">
+            <label for="roomNo" th:text="#{roominfo.roomNo}" class="form-label">객실번호</label>
+            <input type="text" class="form-control" id="roomNo" th:field="*{roomNo}" th:errorclass="field-error"
+                   placeholder="객실번호를 입력하세요.">
+            <div class="field-error" th:errors="*{roomNo}">객실번호 오류</div>
+        </div>
+        <div class="mb-3">
+            <label for="roomType" th:text="#{roominfo.roomType}" class="form-label">객실타입</label>
+            <input type="text" id="roomType" th:field="*{roomType}" th:errorclass="field-error"
+                   th:class="${#fields?.hasGlobalErrors()} ? 'form-control global-error' : 'form-control'"
+                   class="form-control" placeholder="객실타입을 입력하세요.">
+            <div th:each="err : ${#fields.errors('roomType')}" th:if="${errStat.first}" th:text="${err}"
+                 class="global-error">객실타입 오류
+            </div>
+            <div th:if="${#fields.hasGlobalErrors()}" th:each="err:${#fields.globalErrors()}" th:text="${err}"
+                 class="field-error">객실타입 오류메시지
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="maxNum" th:text="#{roominfo.maxNum}" class="form-label">최대인원</label>
+            <input type="text" class="form-control" id="maxNum" th:field="*{maxNum}" th:errorclass="field-error"
+                   placeholder="최대수용인원을 입력하세요.">
+            <div th:each="err:${#fields.errors('maxNum')}" th:if="${errStat.first}" th:text="${err}"
+                 class="field-error">최대인원 오류
+            </div>
+        </div>
+        <div class="mb-3">
+            <input type="button" class="btn btn-secondary btn-sm" id="plusBtn" value="이미지파일 추가">
+            <div id=fileBox></div>
+        </div>
+        <div class="btn-box">
+            <div class="btn-each">
+                <button type="submit" class="btn btn-primary submit_btn" th:text="#{button.save}">Submit</button>
+            </div>
+            <div class="btn-each">
+                <button type="button" class="btn btn-primary submit_btn" th:text="#{button.cancel}"
+                        onclick="location.href='roominfo/roomList.html'"
+                        th:onclick="|location.href='@{/roominfo/list}'|">취소
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script th:src="@{/js/imageFile.js}"></script>
+</body>
+</html>

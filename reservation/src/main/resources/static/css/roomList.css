@@ -1,0 +1,46 @@
+html{
+    height: calc(100vh - 56px - 52px);
+    }
+
+body{
+    height:100%;
+    }
+
+#wrapper{
+    height: auto;
+    min-height: 100%;
+    padding-bottom:10%;
+    }
+footer{
+    position: relative;
+    transform : translateY(-100%);
+    max-width: 800px;
+    margin: 0 auto;
+    }
+
+.container_subMenu{
+    background-color:#e9ecef;
+    }
+.join_container{
+    max-width: 1140px;
+    margin-right:auto;
+    margin-left:auto;
+    text-align: center;
+    }
+h2{
+    margin-top:6%;
+    margin-bottom:2%;
+    }
+.btn_container{
+    margin:-10px 0;
+    width: 100%;
+    text-align: right;
+    }
+.formAlign{
+    width:80%;
+    margin: 0 auto 1%;
+    }
+
+.pageing a{
+    cursor: pointer;
+    }

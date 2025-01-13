@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<main th:fragment="copy" id="wrapper">
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="mx-auto">
+                <h1 class="fw-light mb-4"><strong>여행의 시작, 바로여기에서</strong></h1>
+                <form class="d-flex formStyle" th:action="@{/room/search}" method="get">
+                    <div class="d-flex dateInputDiv">
+                        <label for="schedule" class="form-label dateInputLabel">날짜</label>
+                        <input class="form-control dateInput" type="text" name="daterange" id="schedule">
+                    </div>
+                    <input type="hidden" class="form-control" name="checkInDate" id="checkInDate" value="">
+                    <input type="hidden" class="form-control" name="checkOutDate" id="checkOutDate" value="">
+
+                    <div class="d-flex inputDiv">
+                        <label for="people" class="form-label inputLabel">인원수</label>
+                        <input type="button" value="-" class="people" onclick='count("minus", this)'>
+                        <input class="form-control numberInput" type="text" id="people" name="people" value="2" min="1"
+                               max="30" readonly="readonly">
+                        <input type="button" value="+" class="people" onclick='count("plus", this)'>
+                    </div>
+
+                    <div class="d-flex inputDiv">
+                        <label for="quantity" class="form-label inputLabel">객실수</label>
+                        <input type="button" value="-" class="quantity" onclick='count("minus", this)'>
+                        <input class="form-control numberInput" type="text" id="quantity" name="quantity" value="1"
+                               readonly="readonly">
+                        <input type="button" value="+" class="quantity" onclick='count("plus", this)'>
+                    </div>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-success search" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <h4 th:if="${not #strings.isEmpty(member?.name)}" th:text="|${member.name}님께 추천하는 숙소|"
+                style="margin-bottom:25px;"></h4>
+            <h4 th:if="${#strings.isEmpty(member?.name)}" style="margin-bottom:25px;">고객님께 추천하는 숙소</h4>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 autoplay">
+                <div class="col" th:each="room : ${result}">
+                    <a th:href="@{/room/search(checkInDate=${checkInDate}, checkOutDate=${checkOutDate}, quantity=${quantity}, people=${people})}">
+                        <div class="card shadow-sm">
+                            <th:block th:if="${#lists.isEmpty(room?.storeS3Urls)}">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                                </svg>
+                            </th:block>
+                            <th:block th:if="${not #lists.isEmpty(room?.storeS3Urls)}">
+                                <img th:src="${room.storeS3Urls.get(0)}"
+                                     style="width:100%;height:225px;object-fit: cover;">
+                            </th:block>
+                            <div class="card-body">
+                                <p class="card-text" th:text="${room.roomType}"></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-body-secondary">1박당 요금</small>
+                                    <small class="text-body-secondary"
+                                           th:text="|${#numbers.formatInteger(room.price,3,'COMMA')}원|">가격</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실재고 업데이트</title>
+    <link th:href="@{/css/commonForManage.css}" href="../css/commonForManage.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+</head>
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="title text-center pt-5">
+        <h2 class="mt-0" th:text="#{room.manage}">객실정보 등록</h2>
+    </div>
+    <form th:action th:object="${room}" method="post">
+        <!-- 객실등록한 아이디 -->
+        <input type="hidden" class="form-control" th:field="${member.id}">
+        <div class="mb-3">
+            <div>객실타입</div>
+            <select th:field="*{roomInfoId}" class="form-select">
+                <option value="">객실타입 선택</option>
+                <option th:each="roomInfo : ${roomInfos}"
+                        th:selected="${roomInfo.roomInfoId == roomInfoId}"
+                        th:value="${roomInfo.roomInfoId}"
+                        th:text="${roomInfo.roomType}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="startDate" th:text="#{room.startDate}" class="form-label">날짜</label>
+            <input type="text" class="form-control" id="startDate" th:field="*{startDate}" th:errorclass="field-error"
+                   placeholder="날짜를 입력하세요.">
+            <div class="field-error" th:errors="*{startDate}">객실 시작날짜 오류</div>
+        </div>
+        <div class="mb-3">
+            <label for="endDate" th:text="#{room.endDate}" class="form-label">날짜</label>
+            <input type="text" class="form-control" id="endDate" th:field="*{endDate}"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{endDate}">객실 끝날짜 오류</div>
+        </div>
+        <div class="mb-3">
+            <label for="price" th:text="#{room.price}" class="form-label">객실가격</label>
+            <input type="text" class="form-control" id="price" th:field="*{price}" th:errorclass="field-error"
+                   placeholder="객실가격을 입력하세요.">
+            <div class="field-error" th:errors="*{price}">객실가격 오류</div>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" th:text="#{room.quantity}" class="form-label">객실수량</label>
+            <input type="text" class="form-control" id="quantity" th:field="*{quantity}" th:errorclass="field-error"
+                   placeholder="객실수량을 입력하세요.">
+            <div class="field-error" th:errors="*{quantity}">객실수량 오류</div>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="status" th:field="*{status}">
+            <label class="form-check-label" for="status">객실오픈</label>
+        </div>
+        <div class="btn-box">
+            <div class="btn-each">
+                <button type="submit" class="btn btn-primary submit_btn" th:text="#{button.save}">Submit</button>
+            </div>
+            <div class="btn-each">
+                <a type="button" class="btn btn-primary submit_btn" th:text="#{button.cancel}"
+                   href="/room/calendar">취소
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script th:src="@{/js/dateRangePickerForForm.js}"></script>
+</body>
+</html>

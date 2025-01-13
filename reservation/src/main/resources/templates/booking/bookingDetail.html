@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>예약상세보기</title>
+    <link th:href="@{/css/bookingDetail.css}" href="../css/bookingDetail.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_manager :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="row pt-5">
+        <div class="col-md-12">
+            <table th:object="${findBooking}">
+                <thead>
+                <tr>
+                    <th class="pt-3" colspan="2">
+                        <div class="pb-3">
+                            <a href="javascript:window.history.back();">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                                     class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <span class="badge text-bg-success" th:if="${findBooking.status.description} == '확정'"
+                              th:text="${findBooking.status.description}"></span>
+                        <span class="badge text-bg-secondary" th:if="${findBooking.status.description} == '취소'"
+                              th:text="${findBooking.status.description}"></span>
+
+                        <h5 class="mt-1 mb-0">예약 정보</h5>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <small class="text-body-secondary">예약자</small>
+                        <h6 class="my-1" th:text="*{name}"></h6>
+                    </td>
+                    <td>
+                        <small class="text-body-secondary">예약번호</small>
+                        <h6 class="my-1" th:text="*{bookingId}"></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <small class="text-body-secondary">휴대전화번호</small>
+                        <h6 class="my-1" th:text="*{phoneNumber}"></h6>
+                    </td>
+                    <td>
+                        <small class="text-body-secondary">인원수</small>
+                        <h6 class="my-1" th:text="|총 *{people}명|"></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <small class="text-body-secondary">체크인</small>
+                        <h6 class="my-1" th:text="*{#temporals.format(arrivalDate, 'yyyy-MM-dd')}"></h6>
+                    </td>
+                    <td>
+                        <small class="text-body-secondary">체크아웃</small>
+                        <h6 class="my-1" th:text="*{#temporals.format(departureDate, 'yyyy-MM-dd')}"></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <small class="text-body-secondary">선택한 옵션</small>
+                        <th:block th:each="bookedRoom : ${findBooking.bookedRooms}">
+                            <h6 class="my-1" th:if="${bookedRoom.date == findBooking.arrivalDate}"
+                                th:text="|${bookedRoom.roomType}룸 x ${bookedRoom.count}개|"></h6>
+                        </th:block>
+                    </td>
+                    <td>
+                        <small class="text-body-secondary">요금</small>
+                        <th:block th:each="bookedRoom : ${findBooking.bookedRooms}">
+                            <h6 class="my-1" th:if="${bookedRoomStat.first}"
+                                th:text="|총 ${#aggregates.sum(findBooking.bookedRooms.![bookingPrice])}원|"></h6>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

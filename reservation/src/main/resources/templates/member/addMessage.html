@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>회원가입완료</title>
+    <link th:href="@{/css/common.css}" href="../css/common.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_none :: copy}"></header>
+<div class="success" id="wrapper">
+    <div class="join_container_text">
+        <div class="title text-center">
+            <h2 class="mt-0" th:text="|${memberName} 회원님|">회원님</h2>
+            <h2 class="my-0">회원가입을 축하합니다.</h2>
+        </div>
+        <button class="btn btn-primary submit_btn" type="button" th:text="#{button.login}"
+                onclick="location.href='login.html'" th:onclick="|location.href='@{/login}'|">로그인
+        </button>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

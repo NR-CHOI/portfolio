@@ -1,0 +1,128 @@
+html{
+    height: 100vh;
+    }
+
+body{
+    height:100%;
+    }
+
+#calendar{
+    height: auto;
+    min-height: 100%;
+    padding-bottom:10%;
+    }
+footer{
+    max-width: 800px;
+    margin: 0 auto;
+    }
+
+.join_container a{
+    text-decoration-line: none;
+    color: inherit;
+    }
+.join_container a:hover{
+    color: #0d6efd;
+    }
+.container_subMenu{
+    background-color:#e9ecef;
+    }
+.join_container{
+    height:100%;
+    margin-top:2%;
+    max-width: 1200px;
+    margin-right:auto;
+    margin-left:auto;
+    text-align: center;
+    }
+.calendar{
+    width:100%;
+    }
+.selectBoxs{
+    display: flex;
+    justify-content: space-between;
+    }
+.form-select{
+    width: 30%;
+    margin-bottom:2%;
+    }
+.title{
+    font-size:1.6rem;
+    margin-bottom:0.5%;
+    display: flex;
+    justify-content : center;
+    }
+.left{
+    width:33.3%;
+    display: flex;
+    justify-content: flex-end;
+    }
+.center{
+    width:33.3%;
+    }
+.right{
+    width:33.3%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+.today{
+    margin-right:10px;
+    padding: 0;
+    width:108px;
+    height:30px;
+    }
+.calendar> ul{
+    width:100%;
+    list-style: none;
+    margin: 0;
+    padding:0;
+    }
+.week{
+    height:50px;
+    background-color: #adb5bd;
+    }
+.week> li{
+    display : flex;
+    justify-content : center;
+    border: 1px solid #ced4da;
+    align-items : center;
+    }
+
+.calendar li{
+    list-style: none;
+    float: left;
+    width:14.28%;
+    height:50px;
+    }
+
+.content{
+    font-size: 1rem;
+    font-weight: bold;
+    }
+.content> li{
+    border: 1px solid #adb5bd;
+    height:120px;
+    }
+
+.content span{
+    font-size:0.75rem;
+    font-weight: normal;
+    }
+
+.none{
+    background-color: #dee2e6;
+    }
+
+.noStock{
+    display: block;
+    height:100%;
+    background-color: #dee2e6;
+    }
+
+.stocks{
+    display: block;
+    height:100%;
+    }
+.dayOfMonth{
+    background-color:#ffff96;
+    }

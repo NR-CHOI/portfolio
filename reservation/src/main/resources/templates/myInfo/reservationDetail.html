@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>내 예약</title>
+    <link th:href="@{/css/bookingDetail.css}" href="../css/bookingDetail.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar_member :: copy}"></header>
+<div class="join_container" id="wrapper">
+    <div class="card mt-5" th:object="${booking}">
+        <ul class="list-group list-group-flush">
+            <div class="card-body px-4 pt-3 pb-0">
+                <a th:href="@{/myPage/myReservation}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                         class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                    </svg>
+                </a>
+            </div>
+            <li class="list-group-item py-3 px-4">
+                    <span class="badge text-bg-success" th:if="${booking.status.description} == '확정'"
+                          th:text="${booking.status.description}"></span>
+                <span class="badge text-bg-secondary" th:if="${booking.status.description} == '취소'"
+                      th:text="${booking.status.description}"></span>
+                <h5 class="card-title mt-1">예약 정보</h5>
+                <div class="row">
+                    <div class="col">
+                        <small class="text-body-secondary">체크인</small>
+                        <h6 class="my-1" th:text="*{#temporals.format(arrivalDate, 'yyyy-MM-dd')}"></h6>
+                    </div>
+                    <div class="col">
+                        <small class="text-body-secondary">체크아웃</small>
+                        <h6 class="my-1" th:text="*{#temporals.format(departureDate, 'yyyy-MM-dd')}"></h6>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <small class="text-body-secondary">숙박 일수</small>
+                    <h6 class="my-1" th:text="|${stayDays}일|"></h6>
+                </div>
+            </li>
+            <li class="list-group-item py-3 px-4">
+                <h5 class="card-title">객실 정보</h5>
+                <small class="text-body-secondary">선택한 옵션</small>
+                <th:block th:each="bookedRoom : ${booking.bookedRooms}">
+                    <div class="d-flex">
+                        <div class="mb-2">
+                            <th:block th:if="${bookedRoom.date == booking.arrivalDate}">
+                                <th:block th:if="${not #strings.isEmpty(bookedRoom.storeS3Urls)}">
+                                    <th:block th:each="storeS3Url : ${bookedRoom.storeS3Urls}">
+                                        <img th:if="${storeS3UrlStat.first}" class="roomImg"
+                                             th:src="@{{storeS3Url}(storeS3Url=${storeS3Url})}">
+                                    </th:block>
+                                </th:block>
+                                <th:block th:if="${#strings.isEmpty(bookedRoom.storeS3Urls)}">
+                                    <svg class="bd-placeholder-img roomImg"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         role="img"
+                                         aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                                         focusable="false">
+                                        <rect width="100%" height="100%" fill="#55595c"/>
+                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                                    </svg>
+                                </th:block>
+                            </th:block>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="my-1" th:if="${bookedRoom.date == booking.arrivalDate}"
+                                th:text="|${bookedRoom.roomType}룸 x ${bookedRoom.count}개|"></h6>
+                        </div>
+                    </div>
+                </th:block>
+            </li>
+            <li class="list-group-item py-3 px-4">
+                <h5 class="card-title">투숙객 정보</h5>
+                <div class="row">
+                    <div class="col">
+                        <small class="text-body-secondary">예약자</small>
+                        <h6 class="my-1" th:text="*{name}"></h6>
+                    </div>
+                    <div class="col">
+                        <small class="text-body-secondary">인원수</small>
+                        <h6 class="my-1" th:text="|총 *{people}명|"></h6>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item py-3 px-4">
+                <h5 class="card-title">결제 정보</h5>
+                <small class="text-body-secondary">요금</small>
+                <h6 class="my-1" th:text="|총 ${#aggregates.sum(booking.bookedRooms.![bookingPrice])}원|"></h6>
+            </li>
+            <div class="py-4 px-4" th:if="${booking.status.description} == '확정'">
+                <form th:action="@{/myPage/cancel/{bookingId}(bookingId=${bookingId})}" method="post">
+                    <button class="btn btn-primary cancel" type="submit"
+                            onclick="if(!confirm('삭제하시겠습니까?')){return false;}">예약취소
+                    </button>
+                </form>
+            </div>
+        </ul>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>객실예약완료</title>
+    <link th:href="@{/css/common.css}" href="../css/common.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: copy}"></header>
+<div class="success" id="wrapper">
+    <div class="join_container_text">
+        <div class="title text-center">
+            <h2 class="my-0">객실예약이 완료되었습니다.</h2>
+        </div>
+        <button class="btn btn-primary submit_btn" type="button" th:text="#{home}"
+                onclick="location.href='home.html'" th:onclick="|location.href='@{/}'|">메인페이지
+        </button>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+</body>
+</html>

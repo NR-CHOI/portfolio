@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="copyParam (path)" aria-label="Page navigation example pageNation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${pageDto.nowPage-1 == 0} ? 'disabled':_">
+            <a class="page-link" th:if="${pageDto.nowPage <= 10}" th:href="@{${path}(page=0)}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+            <a class="page-link" th:if="${pageDto.nowPage > 10}"
+               th:href="@{${path}(page=${(((pageDto.nowPage-1)/10)-1)*10})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:if="${pageDto.nowPage > 20}">
+            <a class="page-link" th:href="@{${path}(page=${pageDto.nowPage-11})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <th:block th:if="${pageDto.endPage} == 0">
+            <li class="page-item active">
+                <a class="page-link" th:href="@{${path}(page=${pageDto.nowPage-1})}" th:text="${pageDto.nowPage}">페이지 번호</a>
+            </li>
+        </th:block>
+        <th:block th:if="${pageDto.endPage} != 0">
+            <li class="page-item" th:each="page:${#numbers.sequence(pageDto.startPage,pageDto.endPage)}"
+                th:classappend="${page == pageDto.nowPage} ? 'active':_">
+                <a class="page-link" th:href="@{${path}(page=${page-1})}" th:text="${page}">페이지 번호</a>
+            </li>
+        </th:block>
+
+        <li class="page-item" th:if="${pageDto.nowPage+9 < pageDto.totalPage}">
+            <a class="page-link" th:href="@{${path}(page=${pageDto.nowPage+9})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item"
+            th:classappend="${pageDto.nowPage == pageDto.totalPage || pageDto.totalPage == 0}? 'disabled':_">
+            <a class="page-link" th:href="@{${path}(page=${pageDto.totalPage-1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

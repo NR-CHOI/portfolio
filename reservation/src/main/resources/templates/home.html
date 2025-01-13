@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head_addLinks :: common_head(~{::title},~{::link})">
+    <title>최고의 객실예약 사이트</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <link th:href="@{/css/home.css}" href="../css/home.css" rel="stylesheet">
+    <link th:href="@{/css/slick.css}" href="../css/slick.css" rel="stylesheet">
+    <link th:href="@{/css/slick-theme.css}" href="../css/slick-theme.css" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: copy}"></header>
+<main th:replace="~{fragments/main_body :: copy}"></main>
+<footer th:replace="~{fragments/footer :: copy}"></footer>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="/js/slick.min.js"></script>
+<script src="/js/dateRangePicker.js"></script>
+</body>
+</html>
