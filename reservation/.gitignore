@@ -38,3 +38,6 @@ out/
 
 #AWS S3 & DB
 application-secret.yml
+
+#Mac
+.DS_Store
